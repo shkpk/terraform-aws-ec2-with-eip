@@ -131,7 +131,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_instance.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
-| [aws_spot_instance_request.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/spot_instance_request) | resource |
+
 
 ## Inputs
 
