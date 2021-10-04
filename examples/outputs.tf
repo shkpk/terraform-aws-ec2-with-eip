@@ -113,6 +113,13 @@ output "ec2_multiple_public_dns" {
   }
 }
 
+output "ec2_multiple_secondary_network_interface_id" {
+  description = "The id of secondary network interface assigned to the instance, if applicable."
+  value = {
+    for k, v in module.ec2_multiple : k => v.secondary_network_interface_id
+  }
+}
+
 output "ec2_multiple_tags_all" {
   description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block"
   value = {

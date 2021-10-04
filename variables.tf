@@ -75,3 +75,21 @@ variable "root_block_device" {
   type        = list(any)
   default     = []
 }
+
+variable "enable_second_nic" {
+  description = "Whether to assign secondary network interface"
+  type        = bool
+  default     = false
+}
+
+variable "second_nic_subnet_id" {
+  description = "The VPC Subnet ID to assign to secondary network interface"
+  type        = string
+  default     = null
+}
+
+variable "iam_instance_profile" {
+  description = "IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile"
+  type        = string
+  default     = null
+}

@@ -3,6 +3,7 @@ resource "aws_instance" "this" {
   ami                    = var.ami
   instance_type          = var.instance_type
   key_name               = var.key_name
+  iam_instance_profile = var.iam_instance_profile
   availability_zone      = var.availability_zone
   subnet_id              = var.subnet_id
   vpc_security_group_ids = var.vpc_security_group_ids
@@ -32,4 +33,18 @@ resource "aws_eip" "this" {
   vpc      = true
 
   tags = merge({ "Name" = "${var.name}-eip" }, var.tags)
+}
+
+resource "aws_network_interface" "this" {
+  count           = var.enable_second_nic ? 1 : 0
+  subnet_id       = var.second_nic_subnet_id
+  security_groups = var.vpc_security_group_ids
+  # depends_on      = [aws_eip.inv41_gw_ip]
+
+  attachment {
+    instance     = aws_instance.this.id
+    device_index = 1
+  }
+
+  tags = merge({ "Name" = "${var.name}-services-nic" }, var.tags)
 }

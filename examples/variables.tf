@@ -50,6 +50,35 @@ variable "public_subnets" {
   description = "List of public subnets"
 }
 
+variable "private_subnets" {
+  description = "List of privatesubnets"
+  default     = []
+}
+
 variable "ssh_port" {
   description = "ssh port"
+}
+
+variable "enable_nat_gateway" {
+  description = "Whether to enable NAT Gateway"
+  type        = bool
+  default     = false
+}
+
+variable "enable_vpn_gateway" {
+  description = "Whether to enable vpn gateway"
+  type        = bool
+  default     = false
+}
+
+variable "enable_second_nic" {
+  description = "Whether to assign secondary network interface"
+  type        = bool
+  default     = false
+}
+
+variable "second_nic_subnet_id" {
+  description = "The VPC Subnet ID to assign to secondary network interface"
+  type        = string
+  default     = null
 }

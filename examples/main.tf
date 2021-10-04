@@ -44,11 +44,11 @@ module "vpc" {
   cidr = var.vps_cidr
 
   azs = var.availability_zones
-  #   private_subnets = var.private_subnets
+  private_subnets = var.private_subnets
   public_subnets = var.public_subnets
 
-  #   enable_nat_gateway = var.enable_nat_gateway
-  #   enable_vpn_gateway = var.enable_vpn_gateway
+  enable_nat_gateway = var.enable_nat_gateway
+  enable_vpn_gateway = var.enable_vpn_gateway
 
   tags = {
     Terraform   = "true"
@@ -115,6 +115,8 @@ locals {
       availability_zone = element(module.vpc.azs, 0)
       subnet_id         = element(module.vpc.public_subnets, 0)
       enable_eip        = true
+      enable_second_nic = true
+      second_nic_subnet_id = element(module.vpc.public_subnets, 1)
       root_block_device = [
         {
           encrypted   = true
@@ -132,6 +134,8 @@ locals {
       availability_zone = element(module.vpc.azs, 1)
       subnet_id         = element(module.vpc.public_subnets, 1)
       enable_eip        = true
+      enable_second_nic = false
+    #   second_nic_subnet_id = element(module.vpc.public_subnets, 0)
       root_block_device = [
         {
           encrypted   = true
@@ -142,9 +146,11 @@ locals {
     }
     three = {
       instance_type     = "t3.medium"
-      availability_zone = element(module.vpc.azs, 2)
-      subnet_id         = element(module.vpc.public_subnets, 2)
+      availability_zone = element(module.vpc.azs, 1)
+      subnet_id         = element(module.vpc.public_subnets, 1)
       enable_eip        = false
+      enable_second_nic = false
+    #   second_nic_subnet_id = element(module.vpc.public_subnets, 0)
     }
   }
 }
@@ -166,7 +172,8 @@ module "ec2_multiple" {
   #   enable_volume_tags = false
   #   root_block_device  = each.value.root_block_device
   enable_eip = each.value.enable_eip
-
+  enable_second_nic = each.value.enable_second_nic
+  second_nic_subnet_id = each.value.enable_second_nic ? each.value.second_nic_subnet_id : null
 
   enable_volume_tags = false
   root_block_device  = lookup(each.value, "root_block_device", [])

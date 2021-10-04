@@ -43,6 +43,11 @@ output "public_ip" {
   value       = var.enable_eip ? element(concat(aws_eip.this.*.public_ip, [""]), 0) : element(concat(aws_instance.this.*.public_ip, [""]), 0)
 }
 
+output "secondary_network_interface_id" {
+  description = "The id of secondary network interface assigned to the instance, if applicable."
+  value       = var.enable_second_nic ? element(concat(aws_network_interface.this.*.id, [""]), 0) : element(concat(aws_network_interface.this.*.id, [""]), 0)
+}
+
 output "tags_all" {
   description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block"
   value       = element(concat(aws_instance.this.*.tags_all, [""]), 0)
